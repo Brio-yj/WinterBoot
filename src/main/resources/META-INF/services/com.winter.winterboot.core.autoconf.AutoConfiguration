@@ -1,0 +1,2 @@
+com.winter.winterboot.autoconf.JacksonAutoConfiguration
+com.winter.winterboot.autoconf.WebServerAutoConfiguration
