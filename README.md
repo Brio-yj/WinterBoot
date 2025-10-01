@@ -44,7 +44,7 @@ private Object resolveByAssignableType(Class<?> dependencyType) {
 
 ### 2. PackageScanning 성능 개선
 
-<img width="1095" height="252" alt="2" src="https://github.com/user-attachments/assets/0ab1abc1-c7e4-45b0-afab-0a1370d5c431" />
+<img width="755" height="94" alt="3" src="https://github.com/user-attachments/assets/7dde3695-70bf-4a92-a6f6-a722c9d47ad4" />
 
 초기 구현은 BFS/DFS로 클래스 파일을 탐색했으나, NIO의 `Files.walk()`로 교체하면서 시스템 콜 수를 줄이고 스트림 기반 필터링을 활용했습니다. 동일 패키지를 10,000회 스캔한 실험에서 `Files.walk()` 버전이 BFS 대비 평균 **약 37% 빠른** 결과를 보였습니다.
 
@@ -113,10 +113,8 @@ for (AutoConfiguration ac : ServiceLoader.load(AutoConfiguration.class, cl)) {
 | --- | --- | --- | --- |
 | **POST 50,000건 처리** | **14.5초** | Spring Boot **19초** | WinterBoot가 약 24% 빠름 |
 
-<img width="755" height="94" alt="3" src="https://github.com/user-attachments/assets/7dde3695-70bf-4a92-a6f6-a722c9d47ad4" />
+<img width="1095" height="252" alt="2" src="https://github.com/user-attachments/assets/0ab1abc1-c7e4-45b0-afab-0a1370d5c431" />
 
-- `Files.walk()` 기반 스캐너가 내부 클래스, 추상 타입을 필터링하여 불필요한 클래스 로딩을 줄입니다.
-- 컨트롤러와 매핑을 메모리 캐시에 올려 반복 요청 처리 속도를 높였습니다.
 - **SpringBoot VS WinterBoot** – 동일 하드웨어에서 POST 요청 50,000건을 처리했을 때 Spring Boot가 19초, WinterBoot가 14.5초로 측정되어 WinterBoot가 약 24% 빠르게 응답합니다.
 
 ## 실행 방법
