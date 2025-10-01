@@ -86,57 +86,22 @@ for (AutoConfiguration ac : ServiceLoader.load(AutoConfiguration.class, cl)) {
 
 ### IoC & DI 컨테이너
 
-```mermaid
-flowchart TD
-    A[ApplicationContext] --> B[PackageScanner]
-    B --> C[Component 클래스 수집]
-    C --> D[createBean()]
-    D --> E[beans Map 등록]
-    E --> F[injectDependencies()]
-    F --> G[필드 @Inject 탐색]
-    G --> H[resolveByAssignableType()]
-    H --> I[setAccessible(true) 후 주입]
-```
+<img width="3840" height="3624" alt="IOC_DI" src="https://github.com/user-attachments/assets/516a225e-9b8d-4f66-8979-2dd1336d1dbd" />
 
 - `PackageScanner`가 컴포넌트 후보를 읽고 빈으로 생성합니다.
 - 모든 빈 생성 이후 한 번에 의존성을 주입하여 순환 의존성을 방지합니다.
 
 ### MVC 요청 처리
 
-```mermaid
-flowchart LR
-    A[HttpServer] --> B[DispatcherHandler]
-    B --> C[initHandlerMapping()]
-    C --> D[컨트롤러 + 매핑 수집]
-    B --> E[handle(exchange)]
-    E --> F{매핑 탐색}
-    F -->|없음| G[404]
-    F -->|있음| H[extractPathVariables]
-    H --> I[parseQueryParams]
-    I --> J[매개변수 변환]
-    J --> K[메서드 invoke]
-    K --> L{RestController?}
-    L -->|Yes| M[JSON 응답]
-    L -->|No| N[text/html 응답]
-```
+<img width="3840" height="2698" alt="MVC-2" src="https://github.com/user-attachments/assets/dbf8e802-aee6-4057-8032-1ece3ed243cf" />
+
 
 - 경로 변수, 쿼리 파라미터, `@RequestBody`를 모두 지원합니다.
 - `HttpExchange` 객체를 직접 주입받을 수도 있습니다.
 
 ### 자동 구성 파이프라인
 
-```mermaid
-flowchart TD
-    A[AutoConfigurationLoader.load]
-    A --> B[ServiceLoader 탐색]
-    B --> C{조건 평가}
-    C -->|클래스 존재| D[ConditionalOnClass]
-    C -->|프로퍼티 일치| E[ConditionalOnProperty]
-    D --> F[apply(ctx, env)]
-    E --> F
-    F --> G[DispatcherHandler, HttpServer 등록]
-    F --> H[ObjectMapper 등록]
-```
+<img width="3840" height="2212" alt="AUTO-CONFIGURATION" src="https://github.com/user-attachments/assets/7ceab837-cd37-490e-b4d3-89fa323239a4" />
 
 - `server.enabled=false`로 설정하면 웹 서버 자동 구성을 비활성화할 수 있습니다.
 
@@ -145,7 +110,12 @@ flowchart TD
 | 시나리오 | WinterBoot | 비교 대상 | 결과 |
 | --- | --- | --- | --- |
 | **PackageScanning** | `Files.walk()` 기반 스캐닝 | DFS/BFS 기반 실험 | 약 **37% 속도 개선** |
+
+<img width="1095" height="252" alt="2" src="https://github.com/user-attachments/assets/0ab1abc1-c7e4-45b0-afab-0a1370d5c431" />
+
 | **POST 50,000건 처리** | **14.5초** | Spring Boot **19초** | WinterBoot가 약 24% 빠름 |
+
+<img width="755" height="94" alt="3" src="https://github.com/user-attachments/assets/7dde3695-70bf-4a92-a6f6-a722c9d47ad4" />
 
 - `Files.walk()` 기반 스캐너가 내부 클래스, 추상 타입을 필터링하여 불필요한 클래스 로딩을 줄입니다.
 - 컨트롤러와 매핑을 메모리 캐시에 올려 반복 요청 처리 속도를 높였습니다.
