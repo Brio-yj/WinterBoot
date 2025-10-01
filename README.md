@@ -160,10 +160,6 @@ src/main/java/com/winter/winterboot
 | `@Inject` 즉시 실행 시 순환 의존성 발생 | 빈을 생성하는 즉시 주입하면서 상호 참조가 초기화되지 않음 | **모든 빈을 먼저 생성 → 전체 주입을 한 번에 실행** |
 | `Class.forName()`이 클래스 초기화를 수행 | 초기화가 필요 없지만 기본 호출이 로딩+초기화를 수행 | `Class.forName(name, false, cl)`로 변경해 **로딩만 수행** |
 
-## 참고 이미지
-
-- IoC/DI, MVC, Auto-Configuration 아키텍처 다이어그램은 제공된 자료를 참고했습니다.
-
 ## 향후 개선 아이디어
 
 - AOP, 인터셉터 등 부가 기능 추가
